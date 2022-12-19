@@ -1,14 +1,23 @@
 
 import { Route, Routes } from "react-router-dom";
 import Home from "./routes/home/Home.component";
-// import Directory from "./components/directory/Directory.component";
+import Navigation from "./routes/navigation/Navigation.component";
+// import Directory from "./components/directory/Directory.component";{
+
+
+const Shop = () =>{
+  return <h1>I am a shop page</h1>
+}
 
 const App = () => {
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+      <Route path="/" element={<Navigation />}>
+        <Route index element={<Home />}></Route>
+        <Route path="/shop" element={<Shop />}/>
+      </Route>
       </Routes>
       
     </>
