@@ -11,8 +11,13 @@ import {
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore"
+
 const firebaseConfig = {
   apiKey: "AIzaSyCnD4lBUauHkmR-NrCJjFjjp8qpqNGfgh8",
   authDomain: "clothing-ecommerce-db-211cd.firebaseapp.com",
@@ -43,3 +48,15 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const signInWithTwitterPopup= () => signInWithRedirect(auth,twitterProvider);
+
+export const db = getFirestore();
+
+export const createUserDocumentFromAuth = async(userAuth)=>{
+  console.log(userAuth)
+  const userDocRef = await doc(db,'users',userAuth.uid)
+  console.log(userDocRef)
+
+  const userSnapshot =  await getDoc(userDocRef);
+  console.log(userSnapshot)
+  console.log(userSnapshot.exists())
+}
