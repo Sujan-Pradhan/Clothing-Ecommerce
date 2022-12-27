@@ -6,6 +6,7 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
   TwitterAuthProvider,
 } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -40,22 +41,25 @@ googleProvider.setCustomParameters({
 
 export const auth = getAuth();
 
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
 // export const signInWithTwitterPopup = () =>
 //   signInWithPopup(auth, twitterProvider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth) => {
-  console.log(userAuth);
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation={}) => {
+  // console.log(userAuth);
+  if (!userAuth) return;
   const userDocRef = await doc(db, "users", userAuth.uid);
-  console.log(userDocRef);
+  // console.log(userDocRef);
 
   const userSnapshot = await getDoc(userDocRef);
-  console.log(userSnapshot);
-  console.log(userSnapshot.exists());
+  // console.log(userSnapshot);
+  // console.log(userSnapshot.exists());
 
   // if user data does not exist
   // create / set the document with the data from userAuth in my collection
@@ -64,17 +68,24 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     const createdAt = new Date();
 
     try {
-      await setDoc(userDocRef,{
+      await setDoc(userDocRef, {
         displayName,
         email,
         createdAt,
-      })
+        ...additionalInformation,
+      });
     } catch (error) {
-      console.log("Error creating the user",error.message)
+      console.log("Error creating the user", error.message);
     }
   }
 
   // if user data exists
   // return userDocRef
   return userDocRef;
+};
+
+export const createAuthUserWithEmailAndPassword = async (email,password) => {
+  if(!email || !password) return;
+
+  return await createUserWithEmailAndPassword(auth, email, password)
 };
