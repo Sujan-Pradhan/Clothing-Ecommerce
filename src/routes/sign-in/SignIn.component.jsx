@@ -8,13 +8,14 @@ import {
   //   signInWithTwitterPopup,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
+import SignUpForm from "../../components/signup-form/Sign-up-form.component";
 
 
 const SignIn = () => {
   useEffect(() => {
     const signGoogleRedirect = async () => {
       const response = await getRedirectResult(auth);
-      console.log(response);
+    //   console.log(response);
       if(response){
         const userDocRef = await createUserDocumentFromAuth(response.user)
       }
@@ -42,6 +43,7 @@ const SignIn = () => {
         </button>
         <br />
         {/* <button onClick={logTwitterUser}>Sign in with Twitter Popup</button> */}
+        <SignUpForm />
       </div>
     </>
   );
