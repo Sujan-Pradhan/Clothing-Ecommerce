@@ -11,12 +11,7 @@ import {
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-import {
-  doc,
-  getDoc,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore"
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCnD4lBUauHkmR-NrCJjFjjp8qpqNGfgh8",
@@ -32,31 +27,54 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
-const twitterProvider = new TwitterAuthProvider();
-twitterProvider.setCustomParameters({
-    prompt: "select_account",
-  });
+// const twitterProvider = new TwitterAuthProvider();
+// twitterProvider.setCustomParameters({
+//   prompt: "select_account",
+// });
 
 export const auth = getAuth();
 
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
-export const signInWithTwitterPopup= () => signInWithRedirect(auth,twitterProvider);
+// export const signInWithTwitterPopup = () =>
+//   signInWithPopup(auth, twitterProvider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async(userAuth)=>{
-  console.log(userAuth)
-  const userDocRef = await doc(db,'users',userAuth.uid)
-  console.log(userDocRef)
+export const createUserDocumentFromAuth = async (userAuth) => {
+  console.log(userAuth);
+  const userDocRef = await doc(db, "users", userAuth.uid);
+  console.log(userDocRef);
 
-  const userSnapshot =  await getDoc(userDocRef);
-  console.log(userSnapshot)
-  console.log(userSnapshot.exists())
-}
+  const userSnapshot = await getDoc(userDocRef);
+  console.log(userSnapshot);
+  console.log(userSnapshot.exists());
+
+  // if user data does not exist
+  // create / set the document with the data from userAuth in my collection
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef,{
+        displayName,
+        email,
+        createdAt,
+      })
+    } catch (error) {
+      console.log("Error creating the user",error.message)
+    }
+  }
+
+  // if user data exists
+  // return userDocRef
+  return userDocRef;
+};

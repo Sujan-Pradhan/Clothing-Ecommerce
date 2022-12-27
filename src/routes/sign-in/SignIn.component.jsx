@@ -1,29 +1,50 @@
+import { useEffect } from "react";
+import { getRedirectResult } from "firebase/auth";
 
-import { signInWithGooglePopup, signInWithTwitterPopup,createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
-
-const SignIn = ()=>{
-    const logGoogleUser = async()=>{
-        const {user} = await signInWithGooglePopup();
-        // console.log(response)
-        createUserDocumentFromAuth(user)
-    }
-
-    const logTwitterUser = async()=>{
-        const response = await signInWithTwitterPopup();
-        console.log(response)
-    }
-    return (
-        <>
-            <div>
-                <h1>Sign In</h1>
-                <button onClick={logGoogleUser}>Sign in with Google Popup</button> <br />
-                <button onClick={logTwitterUser}>Sign in with Twitter Popup</button>
-            </div>
-        </>
-    )
-
-}
+import {
+  auth,
+  signInWithGooglePopup,
+  signInWithGoogleRedirect,
+  //   signInWithTwitterPopup,
+  createUserDocumentFromAuth,
+} from "../../utils/firebase/firebase.utils";
 
 
+const SignIn = () => {
+  useEffect(() => {
+    const signGoogleRedirect = async () => {
+      const response = await getRedirectResult(auth);
+      console.log(response);
+      if(response){
+        const userDocRef = await createUserDocumentFromAuth(response.user)
+      }
+    };
+    signGoogleRedirect()
+  }, []);
+  const logGoogleUser = async () => {
+    const { user } = await signInWithGooglePopup();
+    // const response = await signInWithGooglePopup();
+    // console.log(response)
+   const userDocRef =  await createUserDocumentFromAuth(user);
+  };
+
+  //   const logTwitterUser = async () => {
+  //     const response = await signInWithTwitterPopup();
+  //     console.log(response);
+  //   };
+  return (
+    <>
+      <div>
+        <h1>Sign In</h1>
+        <button onClick={logGoogleUser}>Sign in with Google Popup</button>{" "}
+        <button onClick={signInWithGoogleRedirect}>
+          Sign in with Google Redirect
+        </button>
+        <br />
+        {/* <button onClick={logTwitterUser}>Sign in with Twitter Popup</button> */}
+      </div>
+    </>
+  );
+};
 
 export default SignIn;
