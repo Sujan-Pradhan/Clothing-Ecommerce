@@ -4,6 +4,9 @@ import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
+import FormInput from "../form-input/Form-input.component";
+import "./sign-up.styles.scss"
+import Button from "../button/Button.component";
 
 const defaultFormFields = {
   displayName: "",
@@ -59,10 +62,11 @@ const SignUpForm = () => {
   };
 
   return (
-    <div>
-      <h1>Sign up with email and password</h1>
+    <div className="sign-up-container">
+      <h2>Don't have an account?</h2>
+      <span>Sign up with email and password</span>
       <form onSubmit={onHandleSubmit}>
-        <label htmlFor="name">Display Name</label>
+        {/* <label htmlFor="name">Display Name</label>
         <input
           type="text"
           autoComplete="off"
@@ -71,38 +75,51 @@ const SignUpForm = () => {
           required
           name="displayName"
           value={displayName}
+        /> */}
+        <FormInput
+          label="Display Name"
+          type="text"
+          autoComplete="off"
+          onChange={onHandleChange}
+          // placeholder="Enter your name"
+          required
+          name="displayName"
+          value={displayName}
         />
-        <label htmlFor="email">Email</label>
-        <input
+        {/* <label htmlFor="email">Email</label> */}
+        <FormInput
+          label="Email"
           type="email"
           onChange={onHandleChange}
           autoComplete="off"
-          placeholder="Enter your email"
+          // placeholder="Enter your email"
           required
           name="email"
           value={email}
         />
-        <label htmlFor="password">Password</label>
-        <input
+        {/* <label htmlFor="password">Password</label> */}
+        <FormInput
+          label="Password"
           type="password"
           onChange={onHandleChange}
           autoComplete="off"
-          placeholder="Enter password"
+          // placeholder="Enter password"
           required
           name="password"
           value={password}
         />
-        <label htmlFor="password">Confirm Password</label>
-        <input
+        {/* <label htmlFor="password">Confirm Password</label> */}
+        <FormInput
+          label="Confirm Password"
           type="password"
           onChange={onHandleChange}
           autoComplete="off"
-          placeholder="Enter password"
+          // placeholder="Enter password"
           required
           name="confirmPassword"
           value={confirmPassword}
         />
-        <button type="submit">Sign Up</button>
+        <Button type="submit">Sign Up</Button>
       </form>
     </div>
   );
