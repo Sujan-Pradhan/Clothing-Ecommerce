@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { getRedirectResult } from "firebase/auth";
+import "./authentication.styles.scss";
 
 import {
   auth,
@@ -10,24 +11,25 @@ import {
 } from "../../utils/firebase/firebase.utils";
 import SignUpForm from "../../components/signup-form/Sign-up-form.component";
 
+import SignIn from "../../components/signin-form/SignIn-form.component";
 
-const SignIn = () => {
+const Authentication = () => {
   useEffect(() => {
     const signGoogleRedirect = async () => {
       const response = await getRedirectResult(auth);
-    //   console.log(response);
-      if(response){
-        const userDocRef = await createUserDocumentFromAuth(response.user)
+      //   console.log(response);
+      if (response) {
+        const userDocRef = await createUserDocumentFromAuth(response.user);
       }
     };
-    signGoogleRedirect()
+    signGoogleRedirect();
   }, []);
-  const logGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    // const response = await signInWithGooglePopup();
-    // console.log(response)
-   const userDocRef =  await createUserDocumentFromAuth(user);
-  };
+  // const logGoogleUser = async () => {
+  //   const { user } = await signInWithGooglePopup();
+  //   // const response = await signInWithGooglePopup();
+  //   // console.log(response)
+  //  const userDocRef =  await createUserDocumentFromAuth(user);
+  // };
 
   //   const logTwitterUser = async () => {
   //     const response = await signInWithTwitterPopup();
@@ -35,18 +37,19 @@ const SignIn = () => {
   //   };
   return (
     <>
-      <div>
-        <h1>Sign In</h1>
-        <button onClick={logGoogleUser}>Sign in with Google Popup</button>{" "}
+      <div className="authentication-container">
+        {/* <h1>Sign In Page</h1> */}
+        {/* <button onClick={logGoogleUser}>Sign in with Google Popup</button>{" "}
         <button onClick={signInWithGoogleRedirect}>
           Sign in with Google Redirect
         </button>
-        <br />
+        <br /> */}
         {/* <button onClick={logTwitterUser}>Sign in with Twitter Popup</button> */}
+        <SignIn />
         <SignUpForm />
       </div>
     </>
   );
 };
 
-export default SignIn;
+export default Authentication;
