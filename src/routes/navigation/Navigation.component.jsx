@@ -2,6 +2,9 @@ import { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
+import CartDropdown from "../../components/cart-dropdown/Cart-dropdown.component";
+import CartIcon from "../../components/cart-icon/Cart-icon.component";
+import { CartContext } from "../../contexts/cart.context";
 import { UserContext } from "../../contexts/user.context";
 import { SignOutUser } from "../../utils/firebase/firebase.utils";
 
@@ -9,6 +12,8 @@ import "./navigation.styles.scss";
 
 const Navigation = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
+
+  const { isCartOpen } = useContext(CartContext);
   // console.log(currentUser, "Sujan");
 
   // const signOutHandler = async () => {
@@ -36,7 +41,10 @@ const Navigation = () => {
               SIGN IN
             </Link>
           )}
+          <CartIcon />
         </div>
+        { isCartOpen &&  <CartDropdown />}
+        
       </div>
       <Outlet />
     </>
