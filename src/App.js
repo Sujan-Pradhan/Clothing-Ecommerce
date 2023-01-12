@@ -4,7 +4,7 @@ import Navigation from "./routes/navigation/Navigation.component";
 import Authentication from "./routes/authentication/Authentication.component";
 import Shop from "./routes/shop/Shop.component";
 import Checkout from "./routes/checkout/Checkout.component";
-// import Directory from "./components/directory/Directory.component";{
+// import Directory from "./components/directory/Directory.component";
 
 const App = () => {
   return (
