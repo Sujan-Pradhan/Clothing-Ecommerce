@@ -20,6 +20,8 @@ import {
   setDoc,
   collection,
   writeBatch,
+  query,
+  getDocs,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -60,7 +62,10 @@ export const signInWithGoogleRedirect = () =>
 export const db = getFirestore();
 
 export const addCollectionDocuments = async(collectionKey, objectsToAdd)=>{
+  // Collection => like a docRef uesd to get brand new collection
+  // With in the db we are looking for collection key of the categories to use
   const collectionRef = collection(db,collectionKey); 
+//  writeBatch => use to perform multiple writes asa single atomic unit 
   const batch = writeBatch(db);
 
   objectsToAdd.forEach((object)=>{
@@ -71,6 +76,20 @@ export const addCollectionDocuments = async(collectionKey, objectsToAdd)=>{
 
   await batch.commit();
   console.log("Done")
+}
+
+export const getCategoriesAndDocuments = async()=>{
+  const collectionRef = collection(db, 'categories');
+  const q= query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc,docsSnapshot)=>{
+    const {title, items} = docsSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  },{})
+
+  return categoryMap;
 }
 
 export const createUserDocumentFromAuth = async (
