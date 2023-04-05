@@ -22,7 +22,8 @@ const App = () => {
       if (user) {
         createUserDocumentFromAuth(user);
       }
-      dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user });
+      dispatch(setCurrentUser(user));
+      // dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user });
     });
     return unsubscribe;
   }, []);

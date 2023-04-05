@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import CartDropdown from "../../components/cart-dropdown/Cart-dropdown.component";
@@ -9,10 +10,16 @@ import { UserContext } from "../../contexts/user.context";
 import { SignOutUser } from "../../utils/firebase/firebase.utils";
 
 // import "./navigation.styles.scss";
-import { LogoContainer, NavigationContainer, NavLink, NavLinks } from "./navigation-styles"
+import {
+  LogoContainer,
+  NavigationContainer,
+  NavLink,
+  NavLinks,
+} from "./navigation-styles";
+import { selectCurrentUser } from "../../store/user/user.selector";
 
 const Navigation = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  // const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const { isCartOpen } = useContext(CartContext);
   // console.log(currentUser, "Sujan");
@@ -22,35 +29,30 @@ const Navigation = () => {
   //   setCurrentUser(null);
   // };
 
+  // const currentUser = useSelector((state) => state.user.currentUser);
+  const currentUser = useSelector(selectCurrentUser);
+
   return (
     <>
-     <NavigationContainer>
+      <NavigationContainer>
         <LogoContainer to="/">
           <CrwnLogo className="logo" />
         </LogoContainer>
 
         <NavLinks>
-          <NavLink to="/shop">
-            SHOP
-          </NavLink>
+          <NavLink to="/shop">SHOP</NavLink>
           {currentUser ? (
-            <NavLink as='span' onClick={SignOutUser}>
+            <NavLink as="span" onClick={SignOutUser}>
               SIGN OUT
             </NavLink>
           ) : (
-            <NavLink to="/auth">
-              SIGN IN
-            </NavLink>
+            <NavLink to="/auth">SIGN IN</NavLink>
           )}
           <CartIcon />
         </NavLinks>
-        { isCartOpen &&  <CartDropdown />}
-        
+        {/* { isCartOpen &&  <CartDropdown />} */}
       </NavigationContainer>
       <Outlet />
-
-
-
 
       {/* <div className="navigation">
         <Link className="logo-container" to="/">
