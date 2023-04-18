@@ -2,21 +2,22 @@
 import CategoryPreview from "../../components/category-preview/Category-preview.component";
 // import { CategoriesContext } from "../../contexts/categories.context";
 import { useSelector } from "react-redux";
-import { selectCategoriesMap } from "../../store/categories/category.selector";
+import { selectCategories } from "../../store/categories/category.selector";
 
 const CategoriesPreview = () => {
   // const { categoriesMap } = useContext(CategoriesContext);
 
-  const categoriesMap = useSelector(selectCategoriesMap);
+  const categories = useSelector(selectCategories);
 
   return (
     <div className="category-preview-container">
-      {categoriesMap && Object.keys(categoriesMap).map((title) => {
-        const products = categoriesMap[title];
-        return (
-          <CategoryPreview key={title} title={title} products={products} />
-        );
-      })}
+      {categories &&
+        Object.keys(categories).map((title) => {
+          const products = categories[title];
+          return (
+            <CategoryPreview key={title} title={title} products={products} />
+          );
+        })}
     </div>
   );
 };

@@ -61,36 +61,36 @@ export const signInWithGoogleRedirect = () =>
 
 export const db = getFirestore();
 
-export const addCollectionDocuments = async(collectionKey, objectsToAdd)=>{
+export const addCollectionDocuments = async (collectionKey, objectsToAdd) => {
   // Collection => like a docRef uesd to get brand new collection
   // With in the db we are looking for collection key of the categories to use
-  const collectionRef = collection(db,collectionKey); 
-//  writeBatch => use to perform multiple writes asa single atomic unit 
+  const collectionRef = collection(db, collectionKey);
+  //  writeBatch => use to perform multiple writes asa single atomic unit
   const batch = writeBatch(db);
 
-  objectsToAdd.forEach((object)=>{
+  objectsToAdd.forEach((object) => {
     const docRef = doc(collectionRef, object.title.toLowerCase());
     batch.set(docRef, object);
-   
   });
 
   await batch.commit();
-  console.log("Done")
-}
+  console.log("Done");
+};
 
-export const getCategoriesAndDocuments = async()=>{
-  const collectionRef = collection(db, 'categories');
-  const q= query(collectionRef);
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce((acc,docsSnapshot)=>{
-    const {title, items} = docsSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  },{})
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+  // const categoryMap = querySnapshot.docs.reduce((acc,docsSnapshot)=>{
+  //   const {title, items} = docsSnapshot.data();
+  //   acc[title.toLowerCase()] = items;
+  //   return acc;
+  // },{})
 
-  return categoryMap;
-}
+  // return categoryMap;
+};
 
 export const createUserDocumentFromAuth = async (
   userAuth,
