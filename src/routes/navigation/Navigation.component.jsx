@@ -1,12 +1,12 @@
-import { useContext } from "react";
+// import { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import CartDropdown from "../../components/cart-dropdown/Cart-dropdown.component";
 import CartIcon from "../../components/cart-icon/Cart-icon.component";
-import { CartContext } from "../../contexts/cart.context";
-import { UserContext } from "../../contexts/user.context";
+// import { CartContext } from "../../contexts/cart.context";
+// import { UserContext } from "../../contexts/user.context";
 import { SignOutUser } from "../../utils/firebase/firebase.utils";
 
 // import "./navigation.styles.scss";
@@ -17,11 +17,12 @@ import {
   NavLinks,
 } from "./navigation-styles";
 import { selectCurrentUser } from "../../store/user/user.selector";
+import { selectIsCartOpen } from "../../store/cart/cart.selector";
 
 const Navigation = () => {
   // const { currentUser, setCurrentUser } = useContext(UserContext);
 
-  const { isCartOpen } = useContext(CartContext);
+  // const { isCartOpen } = useContext(CartContext);
   // console.log(currentUser, "Sujan");
 
   // const signOutHandler = async () => {
@@ -31,6 +32,7 @@ const Navigation = () => {
 
   // const currentUser = useSelector((state) => state.user.currentUser);
   const currentUser = useSelector(selectCurrentUser);
+  const isCartOpen = useSelector(selectIsCartOpen);
 
   return (
     <>
@@ -50,7 +52,7 @@ const Navigation = () => {
           )}
           <CartIcon />
         </NavLinks>
-        {/* { isCartOpen &&  <CartDropdown />} */}
+        { isCartOpen &&  <CartDropdown />}
       </NavigationContainer>
       <Outlet />
 
